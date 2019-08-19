@@ -1,4 +1,4 @@
-## FFMpeg custom implementation
+## FFMpeg Java Service
 
 ### Usage:
  ***
