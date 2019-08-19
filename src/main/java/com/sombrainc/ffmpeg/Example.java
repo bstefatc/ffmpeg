@@ -1,18 +1,19 @@
 package com.sombrainc.ffmpeg;
 
-import com.sombrainc.ffmpeg.client.FFMpegClient;
-import com.sombrainc.ffmpeg.enumeration.FFMpegServiceType;
+import com.sombrainc.ffmpeg.service.FFMpegClientServiceImpl;
+import com.sombrainc.ffmpeg.service.FFMpegOperationServiceImpl;
+import com.sombrainc.ffmpeg.service.FFMpegService;
 
 import java.io.IOException;
 
 public class Example {
     public static void main(String... args) throws IOException {
-        FFMpegClient ffMpegClient = new FFMpegClient();
-        ffMpegClient.makeVideoShot("resources/video.mp4", "resources/client_image.png", "00:00:01.100");
-        ffMpegClient.makeAudioFromVideo("resources/video.mp4", "resources/client_audio.mp3");
+        FFMpegService ffMpegClientService = new FFMpegClientServiceImpl();
+        ffMpegClientService.makeVideoShot("resources/video.mp4", "resources/client_image.png", "00:00:01.100");
+        ffMpegClientService.makeAudioFromVideo("resources/video.mp4", "resources/client_audio.mp3");
 
-        FFMpegClient operationClient = new FFMpegClient(FFMpegServiceType.OPERATION);
-        operationClient.makeVideoShot("resources/video.mp4", "resources/operation_image.png", "00:00:01.100");
-        operationClient.makeAudioFromVideo("resources/video.mp4", "resources/operation_audio.mp3");
+        FFMpegService ffMpegOperationService = new FFMpegOperationServiceImpl();
+        ffMpegOperationService.makeVideoShot("resources/video.mp4", "resources/operation_image.png", "00:00:01.100");
+        ffMpegOperationService.makeAudioFromVideo("resources/video.mp4", "resources/operation_audio.mp3");
     }
 }

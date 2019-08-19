@@ -1,9 +1,6 @@
 package com.sombrainc.ffmpeg.service;
 
-import com.sombrainc.ffmpeg.enumeration.OperationType;
 import com.sombrainc.ffmpeg.model.Result;
-import net.bramp.ffmpeg.FFmpeg;
-import net.bramp.ffmpeg.FFprobe;
 
 import java.io.IOException;
 import java.util.logging.Logger;
@@ -12,8 +9,8 @@ public class FFMpegOperationServiceImpl extends FFMpegAbstract {
 
     Logger log = Logger.getLogger(FFMpegOperationServiceImpl.class.getName());
 
-    public FFMpegOperationServiceImpl(FFmpeg ffmpeg, FFprobe ffprobe) {
-        super(ffmpeg, ffprobe);
+    public FFMpegOperationServiceImpl() throws IOException {
+        super();
     }
 
     @Override
@@ -30,9 +27,9 @@ public class FFMpegOperationServiceImpl extends FFMpegAbstract {
         try {
             p.waitFor();
         } catch (InterruptedException e) {
-            return generateResult(resultFilePath, OperationType.IMAGE_SHOT, false, "Interrupted error");
+            return generateResult(resultFilePath, IMAGE_SHOT, false, "Interrupted error");
         }
-        Result result = generateResult(resultFilePath, OperationType.IMAGE_SHOT, p.exitValue() == 0, p.exitValue());
+        Result result = generateResult(resultFilePath, IMAGE_SHOT, p.exitValue() == 0, p.exitValue());
         p.destroy();
         log.info(result.toString());
         return result;
@@ -51,9 +48,9 @@ public class FFMpegOperationServiceImpl extends FFMpegAbstract {
         try {
             p.waitFor();
         } catch (InterruptedException e) {
-            return generateResult(resultFilePath, OperationType.AUDIO_RECORD, false, "Interrupted error");
+            return generateResult(resultFilePath, AUDIO_RECORD, false, "Interrupted error");
         }
-        Result result = generateResult(resultFilePath, OperationType.AUDIO_RECORD, p.exitValue() == 0, p.exitValue());
+        Result result = generateResult(resultFilePath, AUDIO_RECORD, p.exitValue() == 0, p.exitValue());
         p.destroy();
         log.info(result.toString());
         return result;

@@ -1,14 +1,12 @@
 package com.sombrainc.ffmpeg.service;
 
-import com.sombrainc.ffmpeg.enumeration.OperationType;
 import com.sombrainc.ffmpeg.model.Result;
 import com.sombrainc.ffmpeg.util.Util;
-import net.bramp.ffmpeg.FFmpeg;
 import net.bramp.ffmpeg.FFmpegExecutor;
-import net.bramp.ffmpeg.FFprobe;
 import net.bramp.ffmpeg.builder.FFmpegBuilder;
 import net.bramp.ffmpeg.job.FFmpegJob;
 
+import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 import java.util.logging.Logger;
 
@@ -16,9 +14,8 @@ public class FFMpegClientServiceImpl extends FFMpegAbstract {
 
     Logger log = Logger.getLogger(FFMpegClientServiceImpl.class.getName());
 
-
-    public FFMpegClientServiceImpl(FFmpeg ffmpeg, FFprobe ffprobe) {
-        super(ffmpeg, ffprobe);
+    public FFMpegClientServiceImpl() throws IOException {
+        super();
     }
 
     @Override
@@ -39,7 +36,7 @@ public class FFMpegClientServiceImpl extends FFMpegAbstract {
                 .setFrames(1)
                 .setStartOffset(millis, TimeUnit.MILLISECONDS)
                 .done();
-        return execute(builder, resultFilePath, OperationType.IMAGE_SHOT);
+        return execute(builder, resultFilePath, IMAGE_SHOT);
     }
 
     @Override
@@ -56,13 +53,13 @@ public class FFMpegClientServiceImpl extends FFMpegAbstract {
                 .overrideOutputFiles(true)   // Override the output if it exists
                 .addOutput(resultFilePath)   // Filename for the destination
                 .done();
-        return execute(builder, resultFilePath, OperationType.AUDIO_RECORD);
+        return execute(builder, resultFilePath, AUDIO_RECORD);
     }
 
-    private Result execute(FFmpegBuilder builder, String resultFilePath, OperationType operationType){
+    private Result execute(FFmpegBuilder builder, String resultFilePath, String operationType){
         FFmpegExecutor executor = new FFmpegExecutor(ffmpeg, ffprobe);
         FFmpegJob fFmpegJob = executor.createJob(builder);
         fFmpegJob.run();
-        return generateResult(resultFilePath, operationType, FFmpegJob.State.FINISHED.equals(fFmpegJob.getState()), fFmpegJob);
+        return generateResult(resultFilePath, AUDIO_RECORD, FFmpegJob.State.FINISHED.equals(fFmpegJob.getState()), fFmpegJob);
     }
 }
